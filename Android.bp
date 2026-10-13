@@ -56,6 +56,7 @@ cc_defaults {
 
 cc_library_static {
     name: "libhwservicemanager",
+    recovery_available: true,
     host_supported: true,
     defaults: [
         "hwservicemanager_defaults",
@@ -79,6 +80,7 @@ cc_defaults {
 
 cc_library_static {
     name: "libtokenmanager",
+    recovery_available: true,
     defaults: [
         "hwservicemanager_defaults",
         "libtokenmanager_shared_libs",
@@ -137,4 +139,24 @@ cc_test {
         "test_lazy.cpp",
     ],
     test_suites: ["device-tests"],
+}
+
+cc_binary {
+    name: "hwservicemanager_recovery",
+    stem: "hwservicemanager",
+    recovery: true,
+    required: ["plat_hwservice_contexts.recovery", "hwservicemanager_recovery_manifest"],
+    defaults: ["hwservicemanager_defaults", "libhwservicemanager_shared_libs", "libtokenmanager_shared_libs"],
+    srcs: ["service.cpp"],
+    shared_libs: ["libcutils"],
+    static_libs: ["libhwservicemanager", "libtokenmanager"],
+    init_rc: ["hwservicemanager_recovery.rc"],
+}
+
+prebuilt_etc {
+    name: "hwservicemanager_recovery_manifest",
+    recovery: true,
+    src: "manifest_recovery.xml",
+    sub_dir: "vintf",
+    filename: "manifest.xml",
 }

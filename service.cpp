@@ -16,6 +16,7 @@
 
 #define LOG_TAG "hwservicemanager"
 
+#include <android-base/logging.h>
 #include <utils/Log.h>
 
 #include <inttypes.h>
@@ -141,6 +142,9 @@ private:
 };
 
 int main() {
+#if defined(__ANDROID_RECOVERY__)
+    android::base::InitLogging(nullptr, android::base::KernelLogger);
+#endif
     // If hwservicemanager crashes, the system may be unstable and hard to debug. This is both why
     // we log this and why we care about this at all.
     setProcessHidlReturnRestriction(HidlReturnRestriction::ERROR_IF_UNCHECKED);

@@ -1,0 +1,6 @@
+service hwservicemanager-recovery /system/bin/hwservicemanager
+    disabled
+    user system
+    group system readproc
+    seclabel u:r:hwservicemanager:s0
+    onrestart setprop hwservicemanager.ready false
